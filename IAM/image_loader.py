@@ -2,7 +2,10 @@
 This file contains code for processing and loading images
 """
 import os
+import cv2
 import glob
+import numpy as np
+from tqdm import tqdm
 
 
 class word_loader():
@@ -24,3 +27,18 @@ class word_loader():
 
     def img_paths(self):
         return self.final
+    
+    def load_image(self, image_path):
+        try:
+            img = cv2.imread(image_path)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        except Exception as e:
+            # There are 2 corrupted images in the data.
+            return np.zeros((100, 100))
+        return img
+
+    def with_images(self):
+        self.image_dict = dict()
+        for key, value in tqdm(self.final.items(), desc='Loading Images '):
+            self.image_dict[key] = self.load_image(value)
+        return self.image_dict

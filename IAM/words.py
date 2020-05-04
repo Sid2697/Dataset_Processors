@@ -12,4 +12,4 @@ parser = word_parser(args.gt_path)
 correct_words = parser.load_ok()
 
 word_img_loader = word_loader(args.image_folder)
-images = word_img_loader.img_paths()
+image_images = word_img_loader.with_images()
