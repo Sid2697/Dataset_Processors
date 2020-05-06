@@ -32,7 +32,7 @@ class word_loader():
         try:
             img = cv2.imread(image_path)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        except Exception as e:
+        except:
             # There are 2 corrupted images in the data.
             return np.zeros((100, 100))
         return img
