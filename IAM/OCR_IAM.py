@@ -1,4 +1,4 @@
-import pdb
+import os
 import pickle
 import argparse
 from text_parser import word_parser
@@ -8,7 +8,13 @@ argument = argparse.ArgumentParser()
 argument.add_argument('--gt_path', default='/Volumes/Storage/Document_Analysis/IAM_Data/ascii/words.txt', help='Path to the text file (ascii/words.txt) containing GT information')
 argument.add_argument('--image_folder', default='/Volumes/Storage/Document_Analysis/IAM_Data/words', help='Path to the folder containing word images')
 argument.add_argument('--split_folder', default='/Volumes/Storage/Document_Analysis/IAM_Data/iamdb_dataset_splits/', help='Path to the text file containing train split')
+argument.add_argument('--pickle_path', default='/Volumes/Storage/Document_Analysis/IAM_Data/IAM_OCR.pkl', help='Path where the pickle file is to be saved.')
 args = argument.parse_args()
+if os.path.exists(args.pickle_path):
+    print('[INFO] {} already present! Quitting!'.format(args.pickle_path))
+    exit()
+else:
+    print('[INFO] Generaing pickle file for training OCR!')
 
 parser = word_parser(args.gt_path, args.split_folder)
 # correct_words = parser.load_ok()
@@ -41,4 +47,4 @@ def save_pickle(file_name, image_images, pickle_corr_words, train_split, test_sp
 
 
 if __name__ == "__main__":
-    save_pickle('/Volumes/Storage/Document_Analysis/IAM_Data/IAM_OCR.pkl', image_images, pickle_corr_words, train_split, test_split)
+    save_pickle(args.pickle_path, image_images, pickle_corr_words, train_split, test_split)
