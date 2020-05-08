@@ -28,13 +28,15 @@ class word_loader():
     def img_paths(self):
         return self.final
     
-    def load_image(self, image_path):
+    def load_image(self, image_path, height=32):
         try:
             img = cv2.imread(image_path)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            ratio = height/img.shape[0]
+            img = cv2.resize(img, None, fx=ratio, fy=ratio, interpolation=cv2.INTER_CUBIC)
         except:
             # There are 2 corrupted images in the data.
-            return np.zeros((100, 100))
+            return np.zeros((32, 100))
         return img
 
     def with_images(self):
