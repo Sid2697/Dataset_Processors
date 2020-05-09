@@ -9,6 +9,7 @@ argument.add_argument('--gt_path', default='/Volumes/Storage/Document_Analysis/I
 argument.add_argument('--image_folder', default='/Volumes/Storage/Document_Analysis/IAM_Data/words', help='Path to the folder containing word images')
 argument.add_argument('--split_folder', default='/Volumes/Storage/Document_Analysis/IAM_Data/iamdb_dataset_splits/', help='Path to the text file containing train split')
 argument.add_argument('--pickle_path', default='/Volumes/Storage/Document_Analysis/IAM_Data/IAM_OCR.pkl', help='Path where the pickle file is to be saved.')
+argument.add_argument('--img_height', default=32, type=int, help='Height of the images in data')
 args = argument.parse_args()
 if os.path.exists(args.pickle_path):
     print('[INFO] {} already present! Quitting!'.format(args.pickle_path))
@@ -22,7 +23,7 @@ correct_words = parser.load_all()
 pickle_corr_words = parser.get_pickle_words(correct=False)
 
 
-word_img_loader = word_loader(args.image_folder)
+word_img_loader = word_loader(args.image_folder, args.img_height)
 train_split, test_split = parser.load_train_test_text()
 image_images = word_img_loader.with_images()
 

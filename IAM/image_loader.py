@@ -9,10 +9,11 @@ from tqdm import tqdm
 
 
 class word_loader():
-    def __init__(self, path):
+    def __init__(self, path, height):
         self.path = os.path.join(path, '*')
         self.level_1 = glob.glob(self.path)
         self.level_2 = dict()
+        self.height = height
         for folder in self.level_1:
             self.level_2[folder.split('/')[-1]] = glob.glob(os.path.join(folder, '*'))
         self.level_3 = dict()
@@ -28,16 +29,16 @@ class word_loader():
     def img_paths(self):
         return self.final
     
-    def load_image(self, image_path, height=32):
+    def load_image(self, image_path):
         try:
             img = cv2.imread(image_path)
             img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            ratio = height/img_gray.shape[0]
+            ratio = self.height/img_gray.shape[0]
             img_resized = cv2.resize(img_gray, None, fx=ratio, fy=ratio, interpolation=cv2.INTER_CUBIC)
             _, img_thresh = cv2.threshold(img_resized, 0, 1, cv2.THRESH_OTSU)
         except:
             # There are 2 corrupted images in the data.
-            return np.zeros((32, 100))
+            return np.zeros((self.height, 100))
         return img_thresh
 
     def with_images(self):
